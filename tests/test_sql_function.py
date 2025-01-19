@@ -11,6 +11,7 @@ def test_create_table(db: Engine):
     """
     Demo test met een SQL DDL
     """
+    print("Test if tabel exists")
     select_stmt = text("SELECT * FROM format_pc_wpl('1234AB', 'Duckstad')")
     query = get_sql_query(Path("sql/format_pc_wpl.sql"))
 
@@ -18,7 +19,6 @@ def test_create_table(db: Engine):
         # Create function in database, don't commit so we have a clean database afterwards
         conn.execute(DDL(query))
         res = conn.execute(select_stmt).fetchall()[0]  # return first row
-
     assert res == ("1234AB Duckstad",)
 
 
@@ -26,12 +26,15 @@ def test_some_query(db: Engine):
     """
     Demo test met een DataFrame als data
     """
+    print("Test SQL query")
     # Dataframe met testdata
     d = {"col1": [1, 2], "col2": [3, 4]}
     df = pd.DataFrame(data=d)
     df.to_sql("test", con=db.connect(), if_exists="replace", index=False, chunksize=10)
     with db.connect() as conn:
         res = conn.execute(text("SELECT * FROM test")).fetchall()
+        print("Since we created the table outside of SQLAlchemy, we need to clean this table up manually.")
         conn.execute(text("DROP TABLE test"))  # clean up after test
+        print("Manual table deleted.")
 
     assert res == [(1, 3), (2, 4)]

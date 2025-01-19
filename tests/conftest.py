@@ -66,6 +66,7 @@ def db() -> Generator[Engine, None, None]:
     # Create database engine and objects
     engine = create_env_engine()
     metadata_obj = MetaData()
+    print
     address = create_address_table(metadata_obj)
     metadata_obj.create_all(bind=engine, tables=[address])
 
@@ -75,9 +76,11 @@ def db() -> Generator[Engine, None, None]:
             conn.execute(statement=statement)
             conn.commit()
     # yield engine, run tests
+    print("Yield engine for usage in tests.")
     yield engine
 
     # Delete table after tests
+    print("Dropping tables")
     metadata_obj.drop_all(engine)
 
 
