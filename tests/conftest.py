@@ -3,7 +3,7 @@ from typing import Generator
 import pytest
 from azure.identity import DefaultAzureCredential
 from azure.keyvault.secrets import SecretClient
-from gima_common.configuration.settings import read_settings
+from sql_test_demo.config import read_config
 from sqlalchemy import Engine, Insert, create_engine, insert
 from sqlalchemy.schema import Column, MetaData, Table
 from sqlalchemy.types import Integer, String
@@ -22,9 +22,9 @@ def get_password():
 def create_env_engine() -> Engine:
     try:
         # Lees lokale config.yaml, of gemounte secrets
-        local_secrets = read_settings()["secrets"]["postgres"]
+        pg_secrets = read_config().postgresql
         return create_engine(
-            f'postgresql+psycopg2://{local_secrets["user"]}:{local_secrets["password"]}@{local_secrets["host"]}:{local_secrets["port"]}/{local_secrets["database"]}'
+            f'postgresql+psycopg2://{pg_secrets.user}:{pg_secrets.password}@{pg_secrets.host}:{pg_secrets.port}/{pg_secrets.database}'
         )
     except KeyError:
         # Haal database uit KeyVault (alleen benaderbaar vanuit MAP test v-net)
@@ -66,7 +66,6 @@ def db() -> Generator[Engine, None, None]:
     # Create database engine and objects
     engine = create_env_engine()
     metadata_obj = MetaData()
-    print
     address = create_address_table(metadata_obj)
     metadata_obj.create_all(bind=engine, tables=[address])
 

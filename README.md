@@ -22,4 +22,4 @@ The tests are located under the `tests` directory. The `conftest.py` file contai
 │   ├── test_sql_functions.py
 ```
 ## Testing
-Run `pytest -s` to run the tests and see the output on the console to get a better understanding of what is happening while running the tests and when testing is finished.
+Run `pytest -s` to run the tests and see the output on the console (thanks to the `-s` flag, which captures the standard out) to get a better understanding of what is happening while running the tests and when testing is finished.
