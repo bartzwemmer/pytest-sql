@@ -6,7 +6,7 @@ To overcome that, we can use a temporary database for testing. This can be done 
 This repository contains a mock data pipeline, to show a typicial repository layout with SQL files that are executed during the execution of the data pipeline. For the CI/CD pipeline, tests with `pytest` are used. 
 
 ## Repository layout
-Under the `src` directory, the Python code is located. The `process.py` file contains the main function of the pipeline, which is called by the orchestration component. One of the pipeline steps is to execute the SQL files in the `sql` directory.
+Under the `src` directory, the Python code is located. The `process.py` file contains the main function of the mock data pipeline, which is called by the orchestration component. You can also run this on the command line, since there is an entrypoint defined in `pyproject.toml` by typing the command `sql-test-demo`. One of the pipeline steps is to execute the SQL files in the `sql` directory.
 
 The tests are located under the `tests` directory. The `conftest.py` file contains the configuration for the tests. The `test_sql_functions.py` file contains the tests for the SQL functions.
 ```
@@ -16,10 +16,24 @@ The tests are located under the `tests` directory. The `conftest.py` file contai
 │   ├── format_pc_wpl.sql
 ├── src
 │   ├── __init__.py
+│   ├── config.py
+|   ├── models.py
 │   ├── process.py
 |── tests
 │   ├── conftest.py
 │   ├── test_sql_functions.py
 ```
 ## Testing
+Make sure you have a running PostgreSQL database and add the connection details to a file called `config.yaml` in the root of the project.  
+Start the container: `docker run -e POSTGRES_PASSWORD=mysecretpassword -d -p 5432:5432 postgres:17.6`.  
+Example YAML-file:
+```yaml
+postgresql:
+  database: postgres
+  host: "localhost"
+  password: "mysecretpassword"
+  port: "5432"
+  schema: "public"
+  user: "postgres"
+```
 Run `pytest -s` to run the tests and see the output on the console (thanks to the `-s` flag, which captures the standard out) to get a better understanding of what is happening while running the tests and when testing is finished.
