@@ -7,7 +7,7 @@ from sqlalchemy.schema import DDL
 from sql_test_demo.process import get_sql_query
 
 
-def test_create_table(db: Engine):
+def test_format_pc_wpl(db: Engine):
     """
     Demo test with SQL DDL
     """
@@ -40,3 +40,4 @@ def test_some_query(db: Engine):
         print("Manual table deleted.")
 
     assert res == [(1, 3), (2, 4)]
+
