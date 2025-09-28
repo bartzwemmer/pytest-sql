@@ -11,7 +11,7 @@ def test_format_pc_wpl(db: Engine):
     """
     Demo test with SQL DDL
     """
-    print("Test if table exists")
+    print("Test if the function returns the proper value")
     select_stmt = text("SELECT * FROM format_pc_wpl('1234AB', 'Duckstad')")
     query = get_sql_query(Path("sql/format_pc_wpl.sql"))
 
@@ -26,7 +26,7 @@ def test_some_query(db: Engine):
     """
     Demo test with a DataFrame for the test data
     """
-    print("Test SQL query")
+    print("Test SQL query using pandas")
     # Dataframe with test data
     d = {"col1": [1, 2], "col2": [3, 4]}
     df = pd.DataFrame(data=d)
@@ -40,4 +40,5 @@ def test_some_query(db: Engine):
         print("Manual table deleted.")
 
     assert res == [(1, 3), (2, 4)]
+
 
